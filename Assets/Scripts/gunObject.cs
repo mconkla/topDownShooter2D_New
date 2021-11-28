@@ -11,7 +11,10 @@ public class gunObject : MonoBehaviour
     public Animator myAnimator;
     public GameObject bullet;
 
-    
+    public string ammoType = "";
+
+    [HideInInspector]
+    public int startMag = 0;
     //gun attributes
     public int magazin;
     public bool singleShoot;
@@ -46,6 +49,8 @@ public class gunObject : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         audioManager = FindObjectOfType<AudioManager>();
+        //to refill to start amount
+        startMag = magazin;
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -176,11 +181,11 @@ public class gunObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("gun touches " + collision.tag);
         if (collision.tag == "killable" && flytime > 0 && !inHand)
         {
-
-            collision.gameObject.GetComponentInChildren<alive>().dead = true;
-            collision.gameObject.GetComponent<CircleCollider2D>().enabled = false;
+            collision.gameObject.GetComponentInChildren<alive>().setDead(true, "gunthrow");
+           
         }
     }
    

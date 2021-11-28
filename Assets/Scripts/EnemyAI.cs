@@ -40,14 +40,14 @@ public class EnemyAI : MonoBehaviour
 
 
         
-            InvokeRepeating("UpdatePath", 0f, 0.1f);
+        InvokeRepeating("UpdatePath", 0f, 0.1f);
         
     }
 
     void UpdatePath()
     {
         if(seeker.IsDone())
-        seeker.StartPath(transform.position, target.position, OnPathComplete);
+            seeker.StartPath(transform.position, target.position, OnPathComplete);
     }
 
     void OnPathComplete(Path p)

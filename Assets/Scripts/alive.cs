@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class alive : MonoBehaviour
 {
-    [HideInInspector]
     public bool dead = false;
     
     [HideInInspector]
@@ -20,6 +19,7 @@ public class alive : MonoBehaviour
     [HideInInspector]
     public Transform child;
 
+    public PlayerMovement player;
     private void Start()
     {
         audioManager = FindObjectOfType<AudioManager>();
@@ -49,48 +49,15 @@ public class alive : MonoBehaviour
     }
 
     void Update()
-    {
-
-        if (dead)
-        {
-            
-            if (child.childCount > 0)
-            {
-                audioManager.PlaySound("enemy");
-                Debug.Log("stirb");
-                child.GetChild(0).gameObject.SetActive(false);
-            }
-            
-            
-            if (mygun != null)
-            mygun.switchHandState();
-            gameObject.GetComponent<SpriteRenderer>().sortingOrder = -5;
-            gameObject.GetComponent<Animator>().SetBool("gun", false);
-            gameObject.GetComponent<Animator>().SetBool("mp", false);
-            gameObject.GetComponent<Animator>().SetBool("uzi", false);
-            gameObject.GetComponent<Animator>().SetBool("dead", true);
-
-            if (mygun != null)
-            {
-                gameObject.transform.DetachChildren();
-                mygun = null;
-            }
+    {      
           
-
-
-        }
-      
-        
-        
-          
-        
         
     }
 
     private void FixedUpdate()
     {
        
-        if (mygun != null && !dead)
+        if (mygun != null && !this.dead)
         {
           
 
@@ -115,18 +82,44 @@ public class alive : MonoBehaviour
 
 
     }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!this.dead && collision.gameObject != null && collision.gameObject.tag == "Player")
+        {
+            this.player = collision.gameObject.GetComponent<PlayerMovement>();
+        }
+
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.tag == "Player" && collision.GetComponent<PlayerMovement>().punch)
+        if (!this.dead && collision.gameObject != null && collision.gameObject.tag == "Player")
         {
-            punched = true;
-            audioManager.PlaySound("enemy");
-            knockedTime =   1.5f;
+            
+            if (player != null && player.punch)
+            {
+                punched = true;
+                audioManager.PlaySound("enemy");
+                knockedTime = 1.5f;
+            }
+            
         }
         else
         {
             punched = false;
+            this.player = null;
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!this.dead && collision.gameObject != null && collision.gameObject.tag == "Player")
+        {
+            this.player = null;          
+        }
+
     }
 
 
@@ -134,7 +127,7 @@ public class alive : MonoBehaviour
     {
      
         if(mygun != null)
-        mygun.shootBullet();
+            mygun.shootBullet();
 
     }
 
@@ -158,6 +151,48 @@ public class alive : MonoBehaviour
             //gameObject.GetComponentInParent<pathSkript>().enabled = true;
             return;
         }
+    }
+
+
+    public void setDead(bool deadState, string killer)
+    {
+        if (this.dead == deadState)
+            return;
+
+        this.dead = deadState;
+        Debug.Log("Dead by " + killer);
+        if (child.childCount > 0)
+        {
+            audioManager.PlaySound("enemy");
+            Debug.Log("stirb");
+            child.GetChild(0).gameObject.SetActive(false);
+        }
+
+
+        if (mygun != null)
+            mygun.switchHandState();
+
+        gameObject.GetComponent<SpriteRenderer>().sortingOrder = -5;
+        gameObject.GetComponent<Animator>().SetBool("gun", false);
+        gameObject.GetComponent<Animator>().SetBool("mp", false);
+        gameObject.GetComponent<Animator>().SetBool("uzi", false);
+
+        gameObject.GetComponent<Animator>().SetBool("dead", true);
+
+        gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+
+        if (mygun != null)
+        {
+            gameObject.transform.DetachChildren();
+            mygun = null;
+        }
+
+
+        gameObject.GetComponentInParent<EnemyAI>().enabled = false;
+        gameObject.GetComponentInParent<pathSkript>().enabled = false;
+        gameObject.GetComponentInParent<CircleCollider2D>().isTrigger = true;
+        gameObject.GetComponentInParent<AIController>().enabled = false;
+
     }
 
 }

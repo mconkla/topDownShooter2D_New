@@ -50,6 +50,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -61,6 +63,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -261,9 +264,12 @@ MonoBehaviour:
   mySpriteRenderer: {fileID: 621582409}
   myAnimator: {fileID: 621582405}
   bullet: {fileID: 7870583554692568824, guid: 75b10c89b2c60fc4dae3fa41a3ce733b, type: 3}
+  ammoType: 
+  startMag: 0
   magazin: 10
   singleShoot: 1
   triggerDelay: 0.36
+  spawnedBullet: {fileID: 0}
   Owner: {fileID: 0}
   inHand: 0
   shoot: 0
@@ -276,25 +282,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4454864013038524025, guid: 1b79482b66b47db40a09676c30d570b1,
+    - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
-      propertyPath: m_Name
-      value: enemyGun
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.706
+      value: -2.58
       objectReference: {fileID: 0}
     - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.271
+      value: 0.87
       objectReference: {fileID: 0}
     - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.71978253
       objectReference: {fileID: 0}
     - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
@@ -309,17 +320,7 @@ PrefabInstance:
     - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.09750323
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9952352
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
+      value: -0.69419956
       objectReference: {fileID: 0}
     - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
@@ -334,12 +335,27 @@ PrefabInstance:
     - target: {fileID: 4454864013038524016, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -731.191
+      value: -807.927
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454864013038524025, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: m_Name
+      value: enemyGun Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454864013038524028, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: speed
+      value: 0.0005
       objectReference: {fileID: 0}
     - target: {fileID: 4454864013038524029, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
       propertyPath: lastPlayerShoot
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454864013038524030, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: walker
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4454864013038524030, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
@@ -361,12 +377,48 @@ PrefabInstance:
       propertyPath: pathNodes.Array.data[3]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4454864013038524031, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.079917565
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454864013038524031, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: -0.035720214
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454864013038524031, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.025314659
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454864013452896988, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.28474236
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454864013452896988, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.19167405
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454864013452896988, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.0005964637
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454864013452896988, guid: 1b79482b66b47db40a09676c30d570b1,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.0031626523
+      objectReference: {fileID: 0}
     - target: {fileID: 4454864013452896989, guid: 1b79482b66b47db40a09676c30d570b1,
         type: 3}
       propertyPath: mygun
       value: 
       objectReference: {fileID: 621582404}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4454864013452896991, guid: 1b79482b66b47db40a09676c30d570b1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1b79482b66b47db40a09676c30d570b1, type: 3}
 --- !u!4 &8070659392291239360 stripped
 Transform:

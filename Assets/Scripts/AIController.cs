@@ -28,14 +28,7 @@ public class AIController : MonoBehaviour
             checkGranade();
 
         }
-        else
-        {
-            gameObject.GetComponentInChildren<EnemyAI>().enabled = false;
-            gameObject.GetComponentInChildren<pathSkript>().enabled = false;
-            this.enabled = false;
-            return;
 
-        }
     }
     private void FixedUpdate()
     {

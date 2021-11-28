@@ -7,7 +7,7 @@ public class pathSkript : MonoBehaviour
     public GameObject[] pathNodes;
 
     int currentNode = 0;
-
+    public bool walker = true;
   
     AIController aicontroller;
 
@@ -20,8 +20,8 @@ public class pathSkript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!aicontroller.iHearYou && !aicontroller.iSawYou && !gameObject.GetComponentInChildren<alive>().dead)
-        walkToNode();
+        if(!aicontroller.iHearYou && !aicontroller.iSawYou && !gameObject.GetComponentInChildren<alive>().dead && this.walker)
+            walkToNode();
     }
 
 

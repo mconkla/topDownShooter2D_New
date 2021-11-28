@@ -32,7 +32,7 @@ public class attributes : MonoBehaviour
             
             if (hit.collider.gameObject.tag == "killable")
             {
-                hit.collider.gameObject.GetComponent<alive>().dead = true;
+                hit.collider.gameObject.GetComponent<alive>().setDead(true,"bullet");
                 Destroy(gameObject, 0f);
                 return;
             }
